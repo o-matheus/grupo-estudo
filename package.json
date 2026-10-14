@@ -1,0 +1,17 @@
+{
+  "name": "grupo-estudo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/preview.mjs",
+    "test": "node --test scripts/build.test.mjs"
+  },
+  "dependencies": {
+    "markdown-it": "14.3.2"
+  }
+}

@@ -45,3 +45,11 @@ Links de estudo e exercícios de continuidade.
 - Mantenha tentativas individuais em `minha-pratica`; essa pasta não é versionada. Exemplos revisados ficam em `exemplo`.
 - Antes de incluir capturas, confira seu conteúdo e remova informações que não fazem parte da atividade.
 - Nas alterações, explique o problema resolvido e como o exemplo foi conferido.
+
+## Atualizar o site
+
+Os textos Markdown são a fonte: não edite `dist/`. Para cada novo encontro, use a pasta `AAAA-MM-DD - Tema` com README. O título vem da primeira linha `#` do README, e a data vem do nome da pasta; o encontro legado `Docker - 14-10` usa a data escrita no seu README.
+
+O build converte `README.md` em `index.html` e outros Markdown em páginas `.html`, mantendo as pastas. Links relativos são convertidos automaticamente. Links para arquivos locais ausentes fazem o build falhar: corrija o caminho antes de enviar ao GitHub. O site publica documentos, HTML didático, capturas e arquivos de exemplo permitidos; pastas de prática, `.env` e configurações de editor são excluídas.
+
+Antes de enviar uma alteração, execute `npm test` e `npm run build`, confira com `npm run preview` e atualize a tabela de encontros do README para quem lê pelo GitHub. A lista do site detecta encontros automaticamente.

@@ -12,3 +12,8 @@
 minha-pratica/
 *.log
 servidor
+
+# Site e instalação local.
+node_modules/
+dist/
+.vercel/
