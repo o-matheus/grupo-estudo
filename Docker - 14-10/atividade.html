@@ -1,0 +1,336 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Atividade prática — Docker e Go</title><style>
+:root{color-scheme:dark;--bg:#0b1320;--panel:#122237;--text:#edf4ff;--muted:#aebfd3;--blue:#73bcff;--line:#2b4059}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:20px}body{margin:0;background:var(--bg);color:var(--text);font:18px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}a{color:var(--blue);text-underline-offset:4px}header{padding:44px max(24px,5vw);background:var(--panel);border-bottom:1px solid var(--line)}header .inner{max-width:1050px;margin:auto}h1{font-size:clamp(32px,5vw,56px);line-height:1.1;letter-spacing:-.03em}h2{font-size:clamp(27px,3vw,38px);line-height:1.2;margin:8px 0 28px}h3{font-size:22px;margin:32px 0 12px}h4{font-size:19px}.eyebrow{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}.lead{max-width:820px;color:var(--muted);font-size:21px}.layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:42px;max-width:1400px;padding:32px 5vw;margin:auto}nav{align-self:start;position:sticky;top:20px}nav ol{padding-left:24px}nav li{font-size:15px;margin:10px 0}nav a{color:var(--muted)}main{min-width:0}.chapter{padding:18px 0 40px;border-bottom:1px solid var(--line);margin-bottom:32px}p{margin:14px 0}li{margin:12px 0}code{font: .92em ui-monospace,SFMono-Regular,Consolas,monospace;color:#c1e1ff;overflow-wrap:anywhere}.code{background:#060e19;border:1px solid var(--line);border-radius:10px;margin:20px 0;break-inside:avoid}.codehead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}pre{padding:18px;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4;line-height:1.6}pre code{font-size:14px}button{background:var(--panel);color:var(--text);font:inherit;font-size:14px;border:1px solid var(--line);border-radius:6px;padding:9px 12px;cursor:pointer;min-height:40px}button:hover{border-color:var(--blue)}:focus-visible{outline:3px solid var(--blue);outline-offset:4px}.actions{display:flex;gap:12px;flex-wrap:wrap}.solution{border:1px solid var(--line);border-radius:10px;margin:28px 0;background:var(--panel)}summary{cursor:pointer;padding:18px;font-weight:600;color:var(--blue)}.answer{padding:0 22px 20px}.done{display:flex;align-items:center;gap:12px;font-weight:600;font-size:16px}.done input{width:20px;height:20px;accent-color:#73bcff}.manual,.status{font-size:13px;color:var(--muted)}.tip{padding:18px;border-left:3px solid var(--blue);background:var(--panel)}.fallback{padding:12px}.fallback textarea{width:100%;min-height:100px;background:var(--bg);color:var(--text);border:1px solid var(--blue);font:16px ui-monospace,monospace;padding:12px}.footer{padding:20px 0;color:var(--muted);font-size:14px}.progress{height:5px;background:var(--line);margin:12px 0}.progress div{height:100%;background:var(--blue)}@media(max-width:900px){.layout{grid-template-columns:1fr;gap:20px}nav{position:static}nav ol{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}}@media(max-width:500px){body{font-size:17px}.layout{padding:24px 20px}nav ol{grid-template-columns:1fr}.codehead{flex-wrap:wrap}.answer{padding:0 12px 12px}pre{padding:12px}ol{padding-left:23px}.done{align-items:flex-start}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@page{size:A4;margin:16mm}@media print{body{color:#162536;background:white;font-size:11pt}header{background:white;padding:0;border-bottom:1px solid #aaa}.layout{display:block;padding:0}nav,button,.done,.manual,.status,.progress,.actions,.fallback{display:none!important}.chapter{break-before:page;padding:0;margin:0;border:0}.chapter:first-child{break-before:auto}.solution{background:white;border-color:#bbb}.answer{padding:0 12px 12px}h1{font-size:25pt}h2{font-size:21pt}h3{font-size:15pt}p,li{orphans:3;widows:3}.code{background:#f3f5f8;border-color:#bbb;break-inside:auto}.codehead{color:#445566}pre code{color:#102b42;font-size:9pt}code{color:#102b42}a,summary,.eyebrow{color:#075a9c}.lead,.footer{color:#445566}.tip{background:#f3f5f8}.codehead{padding:8px 12px}pre{padding:12px}}
+</style></head><body><header><div class="inner"><div class="eyebrow">Grupo de estudo · Docker · 14/10/2026</div><h1>Construa. Confira.<br>Entenda cada passo.</h1><p class="lead">Um servidor Go, uma imagem Docker e uma prática que você pode fazer no seu ritmo.</p><p>Tente primeiro. Abra a solução ao final de cada capítulo para comparar e entender.</p><div class="actions"><a href="#cap-1">Começar atividade ↓</a><button id="print">Imprimir / salvar PDF com soluções</button></div></div></header><div class="layout"><nav aria-label="Capítulos"><strong>Seu percurso</strong><ol><li><a href="#cap-1">Preparar o ambiente</a></li><li><a href="#cap-2">Primeiro servidor</a></li><li><a href="#cap-3">Dockerfile e execução</a></li><li><a href="#cap-4">Rotas, JSON e logs</a></li><li><a href="#cap-5">Alterar e reconstruir</a></li><li><a href="#cap-6">Compose</a></li><li><a href="#cap-7">Desafio: tarefas</a></li></ol><p id="count" class="status" aria-live="polite"></p><div id="progress" class="progress" role="progressbar" aria-label="Capítulos marcados manualmente" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0"><div id="bar"></div></div><p class="status">Progresso local neste navegador, quando o armazenamento estiver disponível.</p><p id="status" class="status" aria-live="polite"></p></nav><main><div class="tip"><b>Como usar</b><p>Crie os arquivos no seu editor e execute comandos no terminal. Este guia não executa código. Esqueletos com <code>___</code> ou TODO precisam ser completados. As soluções mostram arquivos completos, salvo quando indicado “apenas esta linha”.</p><p>O exemplo em <code>exemplo</code> é a referência. Sua tentativa fica em <code>minha-pratica</code>. Continue no mesmo projeto a cada capítulo. Se escolher a porta alternativa 8081, mantenha <code>8081:8080</code> nos comandos Docker e troque 8080 por 8081 nos endereços de teste de todos os capítulos; a aplicação continua ouvindo em 8080.</p></div><section id="cap-1" class="chapter" aria-labelledby="titulo-1"><div class="eyebrow">Capítulo 01</div><h2 id="titulo-1">Preparar o ambiente</h2><h3>1. Objetivo e explicação</h3><p>Você usará Docker, editor, navegador e dois terminais. O compilador Go ficará dentro da imagem: não é necessário instalar Go no computador. A primeira construção precisa de internet.</p><h3>2. Pseudocódigo</h3><div class="code"><div class="codehead"><span>Pseudocódigo · não executar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="text">ABRIR Docker Desktop
+CONFERIR se o serviço responde
+CRIAR pasta minha-pratica
+ENTRAR nela
+BAIXAR imagem oficial de Go</code></pre></div><h3>3. Sua tentativa</h3><ol><li>Abra o Docker Desktop e aguarde o serviço ficar pronto.</li><li>No terminal, entre na pasta do encontro; se ela estiver em outro computador, use o caminho correspondente.</li><li>Crie <code>minha-pratica</code> apenas se não existir e entre nela. Caso já tenha trabalho, continue sem apagar arquivos.</li><li>Confira Docker e Compose. Depois baixe a imagem base.</li></ol><div class="code"><div class="codehead"><span>Terminal · esqueleto com lacunas; complete antes de executar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell">cd &quot;CAMINHO_DA_PASTA_DO_ENCONTRO&quot;
+mkdir -p ___
+cd ___
+docker version
+docker compose version</code></pre></div><p>No Windows, use o caminho local e crie a pasta pelo editor ou Explorador. Os comandos <code>docker</code> permanecem os mesmos.</p><h3>4. Como conferir</h3><p>Confirme que <code>docker version</code> mostra Client e Server e que <code>docker compose version</code> mostra uma versão. Se só aparecer Client ou erro de conexão, abra o Docker Desktop. Confira o caminho atual com <code>pwd</code> no macOS/Linux ou <code>Get-Location</code> no PowerShell.</p><p><b>Pergunta:</b> por que não precisamos instalar Go localmente?</p><details class="solution"><summary>5. Ver solução sugerida</summary><div class="answer"><div class="code"><div class="codehead"><span>Terminal · solução para macOS/Linux</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell"># macOS/Linux: entre na pasta do encontro.
+cd &quot;CAMINHO_DA_PASTA_DO_ENCONTRO&quot;
+# Crie uma pasta para sua tentativa; não altere a referência em exemplo.
+mkdir -p minha-pratica
+cd minha-pratica
+# Devem aparecer Client e Server no primeiro comando.
+docker version
+docker compose version
+# Faça o download antes de começar a construção.
+docker pull golang:1.27.2-bookworm</code></pre></div><p>Use <code>minha-pratica-docker</code> para a imagem, <code>minha-pratica</code> para o container e <code>minha-pratica-estudo</code> para o projeto Compose. Esses nomes separam sua prática da referência.</p><h4>Por que funciona?</h4><p>Docker executará a compilação dentro da imagem oficial de Go. A pasta local guarda seu código; a imagem guarda o ambiente. Se a porta 8080 já estiver ocupada, siga a alternativa 8081 no capítulo 3.</p></div></details><label class="done"><input type="checkbox" data-chapter="1"> Marcar capítulo como concluído por mim</label><p class="manual">Esta marca registra seu progresso; não verifica seu código.</p></section><section id="cap-2" class="chapter" aria-labelledby="titulo-2"><div class="eyebrow">Capítulo 02</div><h2 id="titulo-2">Criar o primeiro servidor</h2><h3>1. Objetivo e explicação</h3><p>Um servidor é um programa que espera pedidos. O navegador envia uma requisição HTTP; nossa função escreve uma resposta. Começaremos com texto e refinaremos as rotas depois.</p><h3>2. Pseudocódigo</h3><div class="code"><div class="codehead"><span>Pseudocódigo · não executar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="text">DEFINIR uma função para responder
+QUANDO chegar um pedido:
+    INFORMAR que a resposta é texto UTF-8
+    ESCREVER a mensagem
+INICIAR servidor na porta 8080</code></pre></div><h3>3. Sua tentativa</h3><ol><li>Crie <code>go.mod</code> dentro de <code>minha-pratica</code>. Copie o conteúdo abaixo; ele identifica o módulo e a versão mínima de Go.</li><li>Crie <code>main.go</code>, copie o esqueleto e complete as lacunas. <code>___</code> é uma marca de exercício e precisa ser substituída.</li><li>Salve os dois arquivos. No próximo capítulo vamos compilá-los usando Docker.</li></ol><div class="code"><div class="codehead"><span>Arquivo go.mod · conteúdo completo</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="gomod">module grupo-estudo/minha-pratica
+
+go 1.26.0
+</code></pre></div><div class="code"><div class="codehead"><span>Arquivo main.go · esqueleto completo com lacunas</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;log&quot;
+    &quot;net/http&quot;
+    &quot;time&quot;
+)
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set(&quot;Content-Type&quot;, &quot;text/plain; charset=utf-8&quot;)
+    fmt.Fprintln(w, ___) // Complete com uma mensagem entre aspas.
+}
+
+func main() {
+    server := &amp;http.Server{
+        Addr: ___, // Complete com &quot;:8080&quot;.
+        Handler: http.HandlerFunc(handler),
+        ReadHeaderTimeout: 5 * time.Second,
+    }
+    log.Println(&quot;Servidor ouvindo em :8080&quot;)
+    log.Fatal(server.ListenAndServe())
+}</code></pre></div><h3>4. Como conferir</h3><p>Confira os nomes dos arquivos, o <code>package main</code> e os imports. Ainda não execute <code>docker build</code>: o Dockerfile será criado no próximo capítulo. A validação executável desta etapa acontece lá.</p><p><b>Perguntas:</b> onde fica o pedido? Onde escrevemos a resposta? Qual porta o servidor usa?</p><details class="solution"><summary>5. Ver solução sugerida</summary><div class="answer"><div class="code"><div class="codehead"><span>Arquivo main.go · solução completa; substitui o arquivo inteiro</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="go">package main
+
+import (
+    &quot;fmt&quot;      // Escreve a mensagem na resposta HTTP.
+    &quot;log&quot;      // Registra a inicialização ou um erro do servidor.
+    &quot;net/http&quot; // Ferramentas HTTP da biblioteca padrão.
+    &quot;time&quot;     // Unidade de tempo para o limite de leitura.
+)
+
+// w recebe a resposta; r contém o pedido feito pelo cliente.
+func handler(w http.ResponseWriter, r *http.Request) {
+    // A primeira versão responde em qualquer caminho; refinaremos depois.
+    w.Header().Set(&quot;Content-Type&quot;, &quot;text/plain; charset=utf-8&quot;)
+    fmt.Fprintln(w, &quot;Olá, grupo de estudo!&quot;)
+}
+
+func main() {
+    server := &amp;http.Server{
+        Addr: &quot;:8080&quot;, // Escuta em todas as interfaces, na porta 8080.
+        Handler: http.HandlerFunc(handler), // Usa nossa função para responder.
+        ReadHeaderTimeout: 5 * time.Second, // Limita a espera pelos cabeçalhos.
+    }
+    log.Println(&quot;Servidor ouvindo em :8080&quot;)
+    log.Fatal(server.ListenAndServe()) // Mantém o servidor esperando pedidos.
+}
+</code></pre></div><div class="code"><div class="codehead"><span>Arquivo go.mod · solução completa</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="gomod">module grupo-estudo/minha-pratica
+
+go 1.26.0
+</code></pre></div><h4>Por que funciona?</h4><p><code>package main</code> define um programa executável. Os imports trazem ferramentas da biblioteca padrão. <code>handler</code> recebe <code>r</code> (pedido) e <code>w</code> (resposta). <code>main</code> inicia o servidor. <code>ListenAndServe</code> fica esperando pedidos. Nesta primeira versão qualquer caminho recebe a mensagem, inclusive /health; isso muda no capítulo 4.</p></div></details><label class="done"><input type="checkbox" data-chapter="2"> Marcar capítulo como concluído por mim</label><p class="manual">Esta marca registra seu progresso; não verifica seu código.</p></section><section id="cap-3" class="chapter" aria-labelledby="titulo-3"><div class="eyebrow">Capítulo 03</div><h2 id="titulo-3">Empacotar e executar com Docker</h2><h3>1. Objetivo e explicação</h3><p>O Dockerfile descreve como construir uma imagem. O container será uma execução dessa imagem. A publicação de portas conecta o navegador ao servidor.</p><h3>2. Pseudocódigo</h3><div class="code"><div class="codehead"><span>Pseudocódigo · não executar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="text">PARTIR da imagem com Go
+CRIAR pasta de trabalho
+COPIAR o código
+COMPILAR o servidor
+DEFINIR o comando inicial
+CONSTRUIR imagem
+CRIAR container e publicar a porta</code></pre></div><h3>3. Sua tentativa</h3><ol><li>Crie <code>Dockerfile</code>, sem extensão, na mesma pasta de main.go. Complete as lacunas.</li><li>Crie <code>.dockerignore</code> com a lista abaixo; ele evita enviar arquivos desnecessários ao build.</li><li>No primeiro terminal, construa a imagem e execute o container.</li><li>Deixe esse terminal aberto; o programa vai ocupar o terminal. Use um segundo terminal para as consultas.</li></ol><div class="code"><div class="codehead"><span>Arquivo Dockerfile · esqueleto completo com lacunas</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="dockerfile">FROM golang:1.27.2-bookworm
+WORKDIR ___
+COPY go.mod main.go ./
+RUN go build -o /app/servidor .
+EXPOSE ___
+CMD [&quot;___&quot;]</code></pre></div><div class="code"><div class="codehead"><span>Arquivo .dockerignore · conteúdo completo</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="text"># Não enviar estes arquivos para o contexto de construção.
+.git
+.DS_Store
+*.log
+servidor
+</code></pre></div><div class="code"><div class="codehead"><span>Terminal · construir e executar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell">docker build -t minha-pratica-docker .
+docker run --name minha-pratica -p 8080:8080 minha-pratica-docker</code></pre></div><h3>4. Como conferir</h3><p>Abra <a href="http://localhost:8080" target="_blank" rel="noopener">localhost:8080</a>. Deve aparecer <code>Olá, grupo de estudo!</code>. No segundo terminal:</p><div class="code"><div class="codehead"><span>Segundo terminal · inspeção</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell">docker ps --filter name=minha-pratica
+docker logs minha-pratica
+curl -i http://localhost:8080/</code></pre></div><p>Espere HTTP 200. Se houver erro de compilação no build, confira imports e lacunas. Se a porta estiver ocupada, use <code>-p 8081:8080</code> no lugar de <code>-p 8080:8080</code> e visite localhost:8081. Não execute as duas alternativas juntas.</p><p>Se o nome do container existir, consulte <code>docker ps -a</code>. Pare e remova somente o container da sua prática antes de repetir. No PowerShell, use <code>curl.exe</code> se <code>curl</code> for um alias.</p><p><b>Pergunta:</b> qual porta pertence ao computador e qual pertence ao container?</p><details class="solution"><summary>5. Ver solução sugerida</summary><div class="answer"><div class="code"><div class="codehead"><span>Arquivo Dockerfile · solução completa</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="dockerfile"># Imagem oficial com o compilador Go; uma etapa para facilitar o estudo.
+FROM golang:1.27.2-bookworm
+# Pasta de trabalho dentro da imagem.
+WORKDIR /app
+# Arquivos locais necessários para este projeto sem dependências externas.
+COPY go.mod main.go ./
+# Executado durante a construção da imagem.
+RUN go build -o /app/servidor .
+# Documenta a porta. A publicação será feita com -p ou Compose.
+EXPOSE 8080
+# Executado ao iniciar um container a partir da imagem.
+CMD [&quot;/app/servidor&quot;]
+</code></pre></div><div class="code"><div class="codehead"><span>Arquivo .dockerignore · solução completa</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="text"># Não enviar estes arquivos para o contexto de construção.
+.git
+.DS_Store
+*.log
+servidor
+</code></pre></div><div class="code"><div class="codehead"><span>Terminal · solução</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell">docker build -t minha-pratica-docker .
+docker run --name minha-pratica -p 8080:8080 minha-pratica-docker</code></pre></div><h4>Por que funciona?</h4><p><code>RUN</code> compila durante a construção; <code>CMD</code> inicia o binário na execução. <code>EXPOSE</code> só documenta: <code>-p</code> publica a porta. Em <code>8081:8080</code>, 8081 é do computador e 8080 continua sendo do container. O ponto do build representa o contexto, portanto execute na pasta minha-pratica.</p></div></details><label class="done"><input type="checkbox" data-chapter="3"> Marcar capítulo como concluído por mim</label><p class="manual">Esta marca registra seu progresso; não verifica seu código.</p></section><section id="cap-4" class="chapter" aria-labelledby="titulo-4"><div class="eyebrow">Capítulo 04</div><h2 id="titulo-4">Adicionar rotas, JSON e logs</h2><h3>1. Objetivo e explicação</h3><p>Agora cada endereço tem uma função: / responde texto; /health informa que o servidor atende pedidos. Essa rota não configura, sozinha, um healthcheck do Docker.</p><h3>2. Pseudocódigo</h3><div class="code"><div class="codehead"><span>Pseudocódigo · não executar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="text">REGISTRAR método e caminho
+SE caminho desconhecido: RESPONDER 404 e PARAR
+SE método diferente de GET: RESPONDER 405 e PARAR
+SE caminho /health: RESPONDER JSON e PARAR
+SENÃO: RESPONDER a mensagem de texto</code></pre></div><h3>3. Sua tentativa</h3><ol><li>Adicione <code>encoding/json</code> aos imports de main.go. Mantenha fmt, log, net/http e time.</li><li>Substitua apenas a função <code>handler</code> pelo esqueleto abaixo e preencha os TODOs. Mantenha a função main.</li><li>Use <code>http.NotFound</code>, <code>http.Error</code> e <code>json.NewEncoder(w).Encode</code>.</li><li>Reconstrua e recrie o container: o código local mudou, mas o container antigo não.</li></ol><div class="code"><div class="codehead"><span>Go · substituir apenas handler e completar TODOs</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="go">func handler(w http.ResponseWriter, r *http.Request) {
+    log.Printf(&quot;%s %s&quot;, r.Method, r.URL.Path)
+    // TODO: retornar 404 se o caminho não for / nem /health.
+    // TODO: retornar 405 e Allow: GET se o método não for GET.
+    // TODO: em /health, informar Content-Type JSON, escrever
+    // {&quot;status&quot;:&quot;ok&quot;} e encerrar com return.
+    // TODO: em /, manter a mensagem de texto.
+}</code></pre></div><div class="code"><div class="codehead"><span>Terminal · atualizar a execução</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell"># Segundo terminal, na pasta minha-pratica.
+docker stop minha-pratica
+docker rm minha-pratica
+docker build -t minha-pratica-docker .
+docker run --name minha-pratica -p 8080:8080 minha-pratica-docker</code></pre></div><h3>4. Como conferir</h3><div class="code"><div class="codehead"><span>Segundo terminal · testar cada comportamento</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell">curl -i http://localhost:8080/
+curl -i http://localhost:8080/health
+curl -i http://localhost:8080/inexistente
+curl -i -X POST http://localhost:8080/
+docker logs minha-pratica</code></pre></div><p>Espere, nessa ordem: 200 com mensagem; 200 com <code>{"status":"ok"}</code>; 404; 405 com <code>Allow: GET</code>. Os logs devem mostrar método e caminho. Se usar a alternativa 8081, troque a porta nos testes.</p><p><b>Perguntas:</b> por que usar return depois de escrever o JSON? Por que validar o caminho antes do método?</p><details class="solution"><summary>5. Ver solução sugerida</summary><div class="answer"><div class="code"><div class="codehead"><span>Arquivo main.go · solução completa; substitui o arquivo inteiro</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="go">package main
+
+import (
+    &quot;encoding/json&quot; // Converte valores Go para JSON.
+    &quot;fmt&quot;           // Escreve texto na resposta.
+    &quot;log&quot;           // Registra eventos no terminal.
+    &quot;net/http&quot;      // Servidor, requisições e códigos de status HTTP.
+    &quot;time&quot;          // Duração do limite de leitura.
+)
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    log.Printf(&quot;%s %s&quot;, r.Method, r.URL.Path) // Ex.: GET /health.
+
+    // Só existem estas duas rotas. O return encerra esta resposta.
+    if r.URL.Path != &quot;/&quot; &amp;&amp; r.URL.Path != &quot;/health&quot; {
+        http.NotFound(w, r)
+        return
+    }
+    // As rotas conhecidas aceitam apenas GET.
+    if r.Method != http.MethodGet {
+        w.Header().Set(&quot;Allow&quot;, &quot;GET&quot;) // Informa o método permitido.
+        http.Error(w, &quot;Use GET&quot;, http.StatusMethodNotAllowed)
+        return
+    }
+    if r.URL.Path == &quot;/health&quot; {
+        w.Header().Set(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;)
+        // Um mapa associa a chave status ao valor ok.
+        json.NewEncoder(w).Encode(map[string]string{&quot;status&quot;: &quot;ok&quot;})
+        return // Não acrescente a mensagem de texto ao JSON.
+    }
+    w.Header().Set(&quot;Content-Type&quot;, &quot;text/plain; charset=utf-8&quot;)
+    fmt.Fprintln(w, &quot;Olá, grupo de estudo!&quot;) // Sem erro: status padrão 200.
+}
+
+func main() {
+    server := &amp;http.Server{
+        Addr: &quot;:8080&quot;,
+        Handler: http.HandlerFunc(handler),
+        ReadHeaderTimeout: 5 * time.Second,
+    }
+    log.Println(&quot;Servidor ouvindo em :8080&quot;)
+    log.Fatal(server.ListenAndServe())
+}
+</code></pre></div><h4>Por que funciona?</h4><p>Cada <code>return</code> encerra a função para evitar juntar respostas diferentes. <code>Content-Type</code> diz ao cliente o formato do corpo. A ordem das verificações faz caminhos desconhecidos retornarem 404, mesmo se o método for diferente de GET; rotas conhecidas retornam 405 para outros métodos. Os arquivos go.mod, Dockerfile e .dockerignore continuam como no capítulo 3.</p></div></details><label class="done"><input type="checkbox" data-chapter="4"> Marcar capítulo como concluído por mim</label><p class="manual">Esta marca registra seu progresso; não verifica seu código.</p></section><section id="cap-5" class="chapter" aria-labelledby="titulo-5"><div class="eyebrow">Capítulo 05</div><h2 id="titulo-5">Alterar, reconstruir e recriar</h2><h3>1. Objetivo e explicação</h3><p>A imagem contém uma cópia dos arquivos feita no build. Editar o código do computador não altera uma execução que já existe.</p><h3>2. Pseudocódigo</h3><div class="code"><div class="codehead"><span>Pseudocódigo · não executar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="text">ALTERAR mensagem no arquivo local
+OBSERVAR resposta antiga no container atual
+PARAR e REMOVER o container da prática
+RECONSTRUIR a imagem
+CRIAR um novo container
+OBSERVAR nova resposta</code></pre></div><h3>3. Sua tentativa</h3><ol><li>Com o container do capítulo 4 rodando, mude apenas a mensagem de main.go para <code>Olá, Docker!</code> e salve.</li><li>Antes de reconstruir, atualize o navegador: a resposta ainda deve ser a mensagem antiga.</li><li>Complete a sequência abaixo; use os nomes da sua prática.</li><li>Atualize novamente o navegador depois de criar o novo container.</li></ol><div class="code"><div class="codehead"><span>Go · substituir só esta linha e completar a mensagem</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="go">fmt.Fprintln(w, &quot;___&quot;)</code></pre></div><div class="code"><div class="codehead"><span>Terminal · sequência com lacunas</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell">docker stop ___
+docker rm ___
+docker build -t ___ .
+docker run --name ___ -p 8080:8080 ___</code></pre></div><h3>4. Como conferir</h3><p>A resposta antes da reconstrução deve ser <code>Olá, grupo de estudo!</code>; depois, <code>Olá, Docker!</code>. /health deve continuar respondendo JSON.</p><p><b>Pergunta:</b> reutilizar o nome da imagem atualiza automaticamente um container antigo?</p><details class="solution"><summary>5. Ver solução sugerida</summary><div class="answer"><div class="code"><div class="codehead"><span>Go · solução da linha alterada</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="go">fmt.Fprintln(w, &quot;Olá, Docker!&quot;)</code></pre></div><div class="code"><div class="codehead"><span>Terminal · solução completa da sequência</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell"># Segundo terminal, na pasta minha-pratica.
+docker stop minha-pratica
+docker rm minha-pratica
+docker build -t minha-pratica-docker .
+docker run --name minha-pratica -p 8080:8080 minha-pratica-docker</code></pre></div><div class="code"><div class="codehead"><span>Arquivo main.go · solução completa desta etapa</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="go">package main
+
+import (
+    &quot;encoding/json&quot; // Converte valores Go para JSON.
+    &quot;fmt&quot;           // Escreve texto na resposta.
+    &quot;log&quot;           // Registra eventos no terminal.
+    &quot;net/http&quot;      // Servidor, requisições e códigos de status HTTP.
+    &quot;time&quot;          // Duração do limite de leitura.
+)
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    log.Printf(&quot;%s %s&quot;, r.Method, r.URL.Path) // Ex.: GET /health.
+
+    // Só existem estas duas rotas. O return encerra esta resposta.
+    if r.URL.Path != &quot;/&quot; &amp;&amp; r.URL.Path != &quot;/health&quot; {
+        http.NotFound(w, r)
+        return
+    }
+    // As rotas conhecidas aceitam apenas GET.
+    if r.Method != http.MethodGet {
+        w.Header().Set(&quot;Allow&quot;, &quot;GET&quot;) // Informa o método permitido.
+        http.Error(w, &quot;Use GET&quot;, http.StatusMethodNotAllowed)
+        return
+    }
+    if r.URL.Path == &quot;/health&quot; {
+        w.Header().Set(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;)
+        // Um mapa associa a chave status ao valor ok.
+        json.NewEncoder(w).Encode(map[string]string{&quot;status&quot;: &quot;ok&quot;})
+        return // Não acrescente a mensagem de texto ao JSON.
+    }
+    w.Header().Set(&quot;Content-Type&quot;, &quot;text/plain; charset=utf-8&quot;)
+    fmt.Fprintln(w, &quot;Olá, Docker!&quot;) // Sem erro: status padrão 200.
+}
+
+func main() {
+    server := &amp;http.Server{
+        Addr: &quot;:8080&quot;,
+        Handler: http.HandlerFunc(handler),
+        ReadHeaderTimeout: 5 * time.Second,
+    }
+    log.Println(&quot;Servidor ouvindo em :8080&quot;)
+    log.Fatal(server.ListenAndServe())
+}
+</code></pre></div><h4>Por que funciona?</h4><p>Uma tag é um nome para uma imagem; reconstruir pode fazer esse nome apontar para outra imagem. O container antigo continua com a imagem da qual foi criado. <code>stop</code> encerra; <code>rm</code> remove o container; a imagem permanece.</p></div></details><label class="done"><input type="checkbox" data-chapter="5"> Marcar capítulo como concluído por mim</label><p class="manual">Esta marca registra seu progresso; não verifica seu código.</p></section><section id="cap-6" class="chapter" aria-labelledby="titulo-6"><div class="eyebrow">Capítulo 06</div><h2 id="titulo-6">Registrar a execução com Compose</h2><h3>1. Objetivo e explicação</h3><p>Compose registra serviços e sua configuração. Um arquivo pode definir API e banco, mas começaremos com o serviço app. O Dockerfile continua definindo a construção da imagem.</p><h3>2. Pseudocódigo</h3><div class="code"><div class="codehead"><span>Pseudocódigo · não executar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="text">DEFINIR serviço app
+CONSTRUIR usando esta pasta
+PUBLICAR porta do computador para 8080 do container
+LIBERAR porta do container manual
+INICIAR o projeto Compose
+CONSULTAR estado e logs
+ENCERRAR o projeto</code></pre></div><h3>3. Sua tentativa</h3><ol><li>Crie <code>compose.yaml</code> na pasta minha-pratica e complete as lacunas.</li><li>Pare e remova o container manual antes de usar Compose.</li><li>Use sempre <code>-p minha-pratica-estudo</code> para identificar este projeto, inclusive em logs e down.</li><li>Confira a resposta e depois encerre o projeto.</li></ol><div class="code"><div class="codehead"><span>Arquivo compose.yaml · esqueleto completo com lacunas</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="yaml">services:
+  app:
+    build: ___
+    ports:
+      - &quot;${HOST_PORT:-8080}:___&quot;</code></pre></div><div class="code"><div class="codehead"><span>Terminal · executar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell"># Libere a porta usada pelo container manual.
+docker stop minha-pratica
+docker rm minha-pratica
+# Execute na pasta minha-pratica; este terminal fica ocupado.
+docker compose -p minha-pratica-estudo up --build</code></pre></div><h3>4. Como conferir</h3><div class="code"><div class="codehead"><span>Segundo terminal · conferir e encerrar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell"># Segundo terminal, na mesma pasta.
+docker compose -p minha-pratica-estudo ps
+docker compose -p minha-pratica-estudo logs app
+curl -i http://localhost:8080/health
+# Encerra os containers e remove a rede do projeto da prática.
+docker compose -p minha-pratica-estudo down</code></pre></div><p>Espere o serviço app em execução e /health com HTTP 200. Após down, ele não deve mais aparecer como serviço ativo.</p><p>Se precisar de 8081, crie <code>.env</code> nesta pasta com <code>HOST_PORT=8081</code> antes de iniciar. Use localhost:8081; remova esse arquivo quando quiser voltar ao padrão.</p><p><b>Pergunta:</b> por que usamos <code>logs app</code>, mesmo que o nome do container seja diferente?</p><details class="solution"><summary>5. Ver solução sugerida</summary><div class="answer"><div class="code"><div class="codehead"><span>Arquivo compose.yaml · solução completa</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="yaml">services:
+  app: # Nome do serviço para os comandos do Compose.
+    build: . # Constrói usando o Dockerfile desta pasta.
+    ports:
+      # Porta do computador à esquerda; do container à direita.
+      - &quot;${HOST_PORT:-8080}:8080&quot;
+</code></pre></div><div class="code"><div class="codehead"><span>Terminal · iniciar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell"># Libere a porta usada pelo container manual.
+docker stop minha-pratica
+docker rm minha-pratica
+# Execute na pasta minha-pratica; este terminal fica ocupado.
+docker compose -p minha-pratica-estudo up --build</code></pre></div><div class="code"><div class="codehead"><span>Segundo terminal · observar e encerrar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell"># Segundo terminal, na mesma pasta.
+docker compose -p minha-pratica-estudo ps
+docker compose -p minha-pratica-estudo logs app
+curl -i http://localhost:8080/health
+# Encerra os containers e remove a rede do projeto da prática.
+docker compose -p minha-pratica-estudo down</code></pre></div><h4>Por que funciona?</h4><p><code>app</code> é o nome do serviço; Compose gera o nome do container. <code>build: .</code> usa o Dockerfile da pasta atual. <code>HOST_PORT</code> escolhe a porta local; se ausente, usa 8080. O projeto próprio isola a prática. <code>down</code> remove os containers e a rede desse projeto, mantendo a imagem.</p></div></details><label class="done"><input type="checkbox" data-chapter="6"> Marcar capítulo como concluído por mim</label><p class="manual">Esta marca registra seu progresso; não verifica seu código.</p></section><section id="cap-7" class="chapter" aria-labelledby="titulo-7"><div class="eyebrow">Capítulo 07</div><h2 id="titulo-7">Desafio: uma lista de tarefas</h2><h3>1. Objetivo e explicação</h3><p>Crie GET /tarefas retornando uma lista fixa de textos em JSON. Esta etapa prepara uma API maior sem introduzir um banco de dados.</p><h3>2. Pseudocódigo</h3><div class="code"><div class="codehead"><span>Pseudocódigo · não executar</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="text">ACEITAR /, /health e /tarefas
+RECUSAR caminhos desconhecidos
+RECUSAR métodos diferentes de GET
+SE caminho /tarefas:
+    CRIAR lista de dois textos
+    RESPONDER JSON e PARAR
+MANTER as respostas anteriores</code></pre></div><h3>3. Sua tentativa</h3><ol><li>Parta do main.go do capítulo 5. Acrescente /tarefas à lista de caminhos aceitos.</li><li>Insira o bloco abaixo antes da verificação de /health e complete os TODOs.</li><li>Reinicie com Compose usando <code>up --build</code>; faça as verificações e encerre.</li></ol><div class="code"><div class="codehead"><span>Go · inserir dentro de handler antes do bloco /health</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="go">if r.URL.Path == &quot;/tarefas&quot; {
+    // TODO: informar Content-Type JSON.
+    // TODO: criar []string com duas tarefas.
+    // TODO: codificar a lista na resposta.
+    // TODO: encerrar a função.
+}</code></pre></div><div class="code"><div class="codehead"><span>Terminal · reconstruir com Compose</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell">docker compose -p minha-pratica-estudo up --build</code></pre></div><h3>4. Como conferir</h3><div class="code"><div class="codehead"><span>Segundo terminal · conferir</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="shell">curl -i http://localhost:8080/tarefas
+curl -i http://localhost:8080/health
+curl -i http://localhost:8080/inexistente
+curl -i -X POST http://localhost:8080/tarefas
+docker compose -p minha-pratica-estudo down</code></pre></div><p>Espere 200 e <code>["Entender imagens","Executar containers"]</code> em /tarefas; /health continua com 200; caminho desconhecido com 404; POST /tarefas com 405. A mensagem em / continua <code>Olá, Docker!</code>. Ajuste a porta se usar 8081.</p><p><b>Pergunta:</b> onde as tarefas estão guardadas? Elas podem ser alteradas por uma requisição nesta versão?</p><details class="solution"><summary>5. Ver solução sugerida</summary><div class="answer"><div class="code"><div class="codehead"><span>Arquivo main.go · solução completa do desafio</span><button class="copy" type="button">Copiar</button></div><pre><code data-language="go">package main
+
+import (
+    &quot;encoding/json&quot; // Converte valores Go para JSON.
+    &quot;fmt&quot;           // Escreve texto na resposta.
+    &quot;log&quot;           // Registra eventos no terminal.
+    &quot;net/http&quot;      // Servidor, requisições e códigos de status HTTP.
+    &quot;time&quot;          // Duração do limite de leitura.
+)
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    log.Printf(&quot;%s %s&quot;, r.Method, r.URL.Path) // Ex.: GET /health.
+
+    // Só existem estas três rotas. O return encerra esta resposta.
+    if r.URL.Path != &quot;/&quot; &amp;&amp; r.URL.Path != &quot;/health&quot; &amp;&amp; r.URL.Path != &quot;/tarefas&quot; {
+        http.NotFound(w, r)
+        return
+    }
+    // As rotas conhecidas aceitam apenas GET.
+    if r.Method != http.MethodGet {
+        w.Header().Set(&quot;Allow&quot;, &quot;GET&quot;) // Informa o método permitido.
+        http.Error(w, &quot;Use GET&quot;, http.StatusMethodNotAllowed)
+        return
+    }
+    if r.URL.Path == &quot;/tarefas&quot; {
+        w.Header().Set(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;)
+        // Lista fixa em memória; não existe banco ou persistência nesta etapa.
+        tarefas := []string{&quot;Entender imagens&quot;, &quot;Executar containers&quot;}
+        json.NewEncoder(w).Encode(tarefas)
+        return
+    }
+    if r.URL.Path == &quot;/health&quot; {
+        w.Header().Set(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;)
+        // Um mapa associa a chave status ao valor ok.
+        json.NewEncoder(w).Encode(map[string]string{&quot;status&quot;: &quot;ok&quot;})
+        return // Não acrescente a mensagem de texto ao JSON.
+    }
+    w.Header().Set(&quot;Content-Type&quot;, &quot;text/plain; charset=utf-8&quot;)
+    fmt.Fprintln(w, &quot;Olá, Docker!&quot;) // Sem erro: status padrão 200.
+}
+
+func main() {
+    server := &amp;http.Server{
+        Addr: &quot;:8080&quot;,
+        Handler: http.HandlerFunc(handler),
+        ReadHeaderTimeout: 5 * time.Second,
+    }
+    log.Println(&quot;Servidor ouvindo em :8080&quot;)
+    log.Fatal(server.ListenAndServe())
+}
+</code></pre></div><p>go.mod, Dockerfile, .dockerignore e compose.yaml permanecem como nas etapas anteriores.</p><h4>Por que funciona?</h4><p>A lista é um <code>[]string</code>, uma sequência de textos. O encoder produz um array JSON. Os dados são fixos no código; não há cadastro nem persistência. Próximos estudos: configuração por ambiente, PostgreSQL como serviço, volumes, prontidão do banco, múltiplas etapas e execução sem root.</p><p>Use as fontes oficiais: <a href="https://docs.docker.com/guides/golang/" target="_blank" rel="noopener">Go com Docker</a>, <a href="https://docs.docker.com/compose/gettingstarted/" target="_blank" rel="noopener">Compose</a> e <a href="https://docs.docker.com/guides/java/" target="_blank" rel="noopener">Java com Docker</a>. Os links exigem internet.</p></div></details><label class="done"><input type="checkbox" data-chapter="7"> Marcar capítulo como concluído por mim</label><p class="manual">Esta marca registra seu progresso; não verifica seu código.</p></section><footer class="footer">Fim da atividade · prática sem duração fixa · Docker e Go com biblioteca padrão.<br>Para apresentar ao grupo, use apresentacao.html; para ampliar os estudos, consulte ESTUDOS.md.</footer></main></div><script>
+const storageKey='docker-estudo-2026-10-14-atividade-v1';const checks=[...document.querySelectorAll('[data-chapter]')];const message=document.getElementById('status');let saved={};try{saved=JSON.parse(localStorage.getItem(storageKey)||'{}');if(!saved||typeof saved!=='object')saved={};}catch{message.textContent='Progresso disponível apenas nesta sessão.';}
+function progress(){const count=checks.filter(c=>c.checked).length;document.getElementById('count').textContent=`${count} de 7 capítulos marcados`;document.getElementById('bar').style.width=`${count/7*100}%`;document.getElementById('progress').setAttribute('aria-valuenow',count);}
+checks.forEach(c=>{c.checked=saved[c.dataset.chapter]===true;c.addEventListener('change',()=>{saved[c.dataset.chapter]=c.checked;try{localStorage.setItem(storageKey,JSON.stringify(saved));}catch{message.textContent='Não foi possível salvar; progresso mantido nesta sessão.';}progress();});});progress();
+document.querySelectorAll('.copy').forEach(button=>button.addEventListener('click',async()=>{const box=button.closest('.code'),text=box.querySelector('code').textContent;try{if(!navigator.clipboard)throw Error('clipboard');await navigator.clipboard.writeText(text);message.textContent='Trecho copiado.';button.textContent='Copiado';setTimeout(()=>button.textContent='Copiar',1500);}catch{let fallback=box.querySelector('.fallback');if(!fallback){fallback=document.createElement('div');fallback.className='fallback';const label=document.createElement('label');label.textContent='Copie com Ctrl+C ou ⌘C:';const area=document.createElement('textarea');area.readOnly=true;area.setAttribute('aria-label','Trecho para cópia manual');label.append(area);fallback.append(label);box.append(fallback);}const area=fallback.querySelector('textarea');area.value=text;area.focus();area.select();message.textContent='Use o campo selecionado para copiar manualmente.';}}));
+let printState=[];window.addEventListener('beforeprint',()=>{printState=[...document.querySelectorAll('.solution')].map(d=>[d,d.open]);printState.forEach(([d])=>d.open=true);});window.addEventListener('afterprint',()=>printState.forEach(([d,open])=>d.open=open));document.getElementById('print').addEventListener('click',()=>window.print());
+</script></body></html>

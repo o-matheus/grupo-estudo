@@ -1,0 +1,14 @@
+# Arquivos locais do sistema e do editor.
+.DS_Store
+.idea/
+.vscode/
+
+# Configurações privadas; modelos podem ser compartilhados.
+.env
+.env.*
+!.env.example
+
+# Tentativas individuais e saídas locais.
+minha-pratica/
+*.log
+servidor
