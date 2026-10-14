@@ -42,7 +42,7 @@ No Docker Desktop, os containers Linux normalmente rodam dentro de uma máquina 
 
 Abra `exemplo/main.go`. Mostre só três partes: as rotas, as respostas e `Addr: ":8080"`.
 
-**Fala sugerida:** “Servidor é um programa que espera pedidos. O navegador faz um pedido HTTP e recebe uma resposta. A porta identifica por onde esse servidor recebe os pedidos. Nosso programa fica esperando na porta 8080.”
+**Fala sugerida:** “Um servidor é um programa que recebe pedidos de clientes, trata esses pedidos e envia respostas. Aqui, o navegador é o cliente e o programa Go é o servidor. O pedido vai do navegador ao servidor; a resposta volta do servidor ao navegador. Nosso programa recebe os pedidos na porta 8080.”
 
 - `/` retorna uma mensagem de texto.
 - `/health` retorna JSON, um formato de dados que outros programas conseguem ler.
