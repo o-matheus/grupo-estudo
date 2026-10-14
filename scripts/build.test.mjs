@@ -16,12 +16,14 @@ test('gera encontros, converte links e exclui arquivos locais',async()=>{
   await fs.writeFile(path.join(meeting,'README.md'),'# HTTP — encontro de 21/10/2026\n\n## Estudar\n\n[Notas](notas.md)\n\n![Figura](figura.png)\n\n[Exemplo](main.go)\n\n| A | B |\n|---|---|\n| 1 | 2 |\n\n```sh\necho ola\n```');
   await fs.writeFile(path.join(meeting,'notas.md'),'# Notas\n\n[Voltar](README.md)');
   await fs.writeFile(path.join(meeting,'main.go'),'package main');
+  await fs.writeFile(path.join(meeting,'atividade.html'),'<!doctype html><html><head><title>Teste</title></head><body><main>Exercício</main></body></html>');
   await fs.writeFile(path.join(meeting,'figura.png'),'test');
   await fs.writeFile(path.join(meeting,'.env'),'segredo');
   for(const folder of ['.idea','minha-pratica','dist']){await fs.mkdir(path.join(meeting,folder));await fs.writeFile(path.join(meeting,folder,'local.md'),'privado');}
   const result=await build(root);assert.equal(result.meetings,1);
   const home=await fs.readFile(path.join(root,'dist/index.html'),'utf8');assert.match(home,/21\/10\/2026/);assert.match(home,/2026-10-21%20-%20HTTP\/index.html/);
-  const page=await fs.readFile(path.join(root,'dist/2026-10-21 - HTTP/index.html'),'utf8');assert.match(page,/notas.html/);assert.match(page,/<table>/);assert.match(page,/class="copy"/);assert.match(page,/download=""/);
+  const page=await fs.readFile(path.join(root,'dist/2026-10-21 - HTTP/index.html'),'utf8');assert.match(page,/notas.html/);assert.match(page,/<table>/);assert.match(page,/class="copy"/);assert.match(page,/download=""/);assert.match(page,/href="\/">← Página inicial/);
+  const activity=await fs.readFile(path.join(root,'dist/2026-10-21 - HTTP/atividade.html'),'utf8');assert.match(activity,/href="\/">← Página inicial/);assert.match(activity,/2026-10-21%20-%20HTTP\/index.html">← Materiais do encontro/);assert.match(activity,/<main>Exercício<\/main>/);
   for(const name of ['.env','.idea','minha-pratica','dist'])await assert.rejects(fs.access(path.join(root,'dist/2026-10-21 - HTTP',name)));
   await fs.writeFile(path.join(meeting,'notas.md'),'[Ausente](nao-existe.md)');await assert.rejects(build(root),/Link local sem arquivo publicado/);
  }finally{await fs.rm(root,{recursive:true,force:true});}

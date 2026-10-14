@@ -94,7 +94,17 @@ export async function build(root, out = path.join(root, 'dist')) {
   for (const file of files) {
     const destination = path.join(out, file.endsWith('.md') ? pagePath(file) : file);
     await fs.mkdir(path.dirname(destination), {recursive:true});
-    if (!file.endsWith('.md')) { await fs.copyFile(path.join(root,file), destination); continue; }
+    if (!file.endsWith('.md')) {
+      if (file.endsWith('.html')) {
+        const meeting = meetings.find(m => file.startsWith(m.folder + '/'));
+        const navigation = `<nav class="material-return" aria-label="Voltar aos materiais"><a href="/">← Página inicial</a>${meeting ? `<a href="${urlPath(meeting.folder+'/index.html')}">← Materiais do encontro</a>` : ''}</nav>`;
+        const navigationStyle = `<style>.material-return{display:flex;flex-wrap:wrap;gap:16px;margin:0;padding:12px max(20px,5vw);background:#0b1320;border-bottom:1px solid #2a3d55;font:15px/1.5 system-ui,sans-serif}.material-return a{color:#78bfff;text-underline-offset:4px;padding:6px 0}.material-return a:focus-visible{outline:3px solid #78bfff;outline-offset:4px}@media print{.material-return{display:none!important}}</style>`;
+        let html = await fs.readFile(path.join(root,file),'utf8');
+        html = html.replace(/<\/head>/i,navigationStyle+'</head>').replace(/<body([^>]*)>/i,`<body$1>${navigation}`);
+        await fs.writeFile(destination,html);
+      } else await fs.copyFile(path.join(root,file), destination);
+      continue;
+    }
     const data = rendered.get(file);
     const meeting = meetings.find(m => file.startsWith(m.folder + '/'));
     const date = value => value ? value.split('-').reverse().join('/') : '';
@@ -103,7 +113,7 @@ export async function build(root, out = path.join(root, 'dist')) {
     const toc = data.headings.length ? `<nav class="toc" aria-label="Nesta página"><strong>Nesta página</strong>${data.headings.map(h=>`<a href="#${h.id}">${escape(h.text)}</a>`).join('')}</nav>` : '';
     const github = 'https://github.com/o-matheus/grupo-estudo/blob/main/' + file.split('/').map(encodeURIComponent).join('/');
     const home = file==='README.md';
-    const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Encontros, anotações e exercícios do grupo de estudo."><title>${escape(home ? 'Grupo de estudo' : data.title + ' · Grupo de estudo')}</title><link rel="stylesheet" href="/assets/site.css"><script defer src="/assets/site.js"></script></head><body><header><a class="brand" href="/">Grupo de estudo<span>Aprender, praticar, compartilhar.</span></a><a href="https://github.com/o-matheus/grupo-estudo">Repositório ↗</a></header><div class="layout"><aside>${sidebar}${toc}</aside><main>${home?`<section class="intro"><span class="eyebrow">NOSSO PERCURSO</span><h1>Um encontro.<br>Um novo aprendizado.</h1><p>Anotações, exemplos e atividades para estudar juntos e continuar no seu ritmo.</p><ul class="meetings">${meetingList}</ul></section><hr>`:''}<article>${data.content}</article><footer><a href="${github}">Ver este documento no GitHub ↗</a><p>Os exemplos são executados no seu computador. Este site reúne os materiais.</p></footer></main></div><p id="copy-status" class="sr-only" aria-live="polite"></p></body></html>`;
+    const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Encontros, anotações e exercícios do grupo de estudo."><title>${escape(home ? 'Grupo de estudo' : data.title + ' · Grupo de estudo')}</title><link rel="stylesheet" href="/assets/site.css"><script defer src="/assets/site.js"></script></head><body><header><a class="brand" href="/">Grupo de estudo<span>Aprender, praticar, compartilhar.</span></a><div class="header-links">${!home ? '<a href="/">← Página inicial</a>' : ''}<a href="https://github.com/o-matheus/grupo-estudo">Repositório ↗</a></div></header><div class="layout"><aside>${sidebar}${toc}</aside><main>${home?`<section class="intro"><span class="eyebrow">NOSSO PERCURSO</span><h1>Um encontro.<br>Um novo aprendizado.</h1><p>Anotações, exemplos e atividades para estudar juntos e continuar no seu ritmo.</p><ul class="meetings">${meetingList}</ul></section><hr>`:''}<article>${data.content}</article><footer><a href="${github}">Ver este documento no GitHub ↗</a><p>Os exemplos são executados no seu computador. Este site reúne os materiais.</p></footer></main></div><p id="copy-status" class="sr-only" aria-live="polite"></p></body></html>`;
     await fs.writeFile(destination,html);
   }
   await fs.copyFile(path.join(root,'scripts/site.css'),path.join(out,'assets/site.css'));
