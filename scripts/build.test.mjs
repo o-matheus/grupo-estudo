@@ -23,7 +23,7 @@ test('gera encontros, converte links e exclui arquivos locais',async()=>{
   const result=await build(root);assert.equal(result.meetings,1);
   const home=await fs.readFile(path.join(root,'dist/index.html'),'utf8');assert.match(home,/21\/10\/2026/);assert.match(home,/2026-10-21%20-%20HTTP\/index.html/);
   const page=await fs.readFile(path.join(root,'dist/2026-10-21 - HTTP/index.html'),'utf8');assert.match(page,/notas.html/);assert.match(page,/<table>/);assert.match(page,/class="copy"/);assert.match(page,/download=""/);assert.match(page,/href="\/">← Página inicial/);
-  const activity=await fs.readFile(path.join(root,'dist/2026-10-21 - HTTP/atividade.html'),'utf8');assert.match(activity,/href="\/">← Página inicial/);assert.match(activity,/2026-10-21%20-%20HTTP\/index.html">← Materiais do encontro/);assert.match(activity,/<main>Exercício<\/main>/);
+  const activity=await fs.readFile(path.join(root,'dist/2026-10-21 - HTTP/atividade.html'),'utf8');assert.match(activity,/href="\/">← Página inicial/);assert.match(activity,/2026-10-21%20-%20HTTP\/index.html">← Materiais do encontro/);assert.match(activity,/<main>Exercício<\/main>/);assert.match(activity,/<div class="material-return" role="navigation"/);assert.match(activity,/material-return\{position:static/);
   for(const name of ['.env','.idea','minha-pratica','dist'])await assert.rejects(fs.access(path.join(root,'dist/2026-10-21 - HTTP',name)));
   await fs.writeFile(path.join(meeting,'notas.md'),'[Ausente](nao-existe.md)');await assert.rejects(build(root),/Link local sem arquivo publicado/);
  }finally{await fs.rm(root,{recursive:true,force:true});}

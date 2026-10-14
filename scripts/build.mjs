@@ -97,8 +97,8 @@ export async function build(root, out = path.join(root, 'dist')) {
     if (!file.endsWith('.md')) {
       if (file.endsWith('.html')) {
         const meeting = meetings.find(m => file.startsWith(m.folder + '/'));
-        const navigation = `<nav class="material-return" aria-label="Voltar aos materiais"><a href="/">← Página inicial</a>${meeting ? `<a href="${urlPath(meeting.folder+'/index.html')}">← Materiais do encontro</a>` : ''}</nav>`;
-        const navigationStyle = `<style>.material-return{display:flex;flex-wrap:wrap;gap:16px;margin:0;padding:12px max(20px,5vw);background:#0b1320;border-bottom:1px solid #2a3d55;font:15px/1.5 system-ui,sans-serif}.material-return a{color:#78bfff;text-underline-offset:4px;padding:6px 0}.material-return a:focus-visible{outline:3px solid #78bfff;outline-offset:4px}@media print{.material-return{display:none!important}}</style>`;
+        const navigation = `<div class="material-return" role="navigation" aria-label="Voltar aos materiais"><a href="/">← Página inicial</a>${meeting ? `<a href="${urlPath(meeting.folder+'/index.html')}">← Materiais do encontro</a>` : ''}</div>`;
+        const navigationStyle = `<style>.material-return{position:static;top:auto;align-self:auto;display:flex;flex-wrap:wrap;gap:16px;margin:0;padding:12px max(20px,5vw);background:#0b1320;border-bottom:1px solid #2a3d55;font:15px/1.5 system-ui,sans-serif}.material-return a{color:#78bfff;text-underline-offset:4px;padding:6px 0}.material-return a:focus-visible{outline:3px solid #78bfff;outline-offset:4px}@media print{.material-return{display:none!important}}</style>`;
         let html = await fs.readFile(path.join(root,file),'utf8');
         html = html.replace(/<\/head>/i,navigationStyle+'</head>').replace(/<body([^>]*)>/i,`<body$1>${navigation}`);
         await fs.writeFile(destination,html);
