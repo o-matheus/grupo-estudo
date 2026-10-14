@@ -17,3 +17,5 @@ servidor
 node_modules/
 dist/
 .vercel/
+.vercel
+.env*

@@ -2,6 +2,8 @@
 
 Repositório dos encontros do grupo: apresentações, atividades práticas, exemplos de código e fontes para continuar estudando.
 
+**[Acessar o site do grupo](https://grupo-estudo.vercel.app)**
+
 ## Encontros
 
 | Data | Tema | Material |
