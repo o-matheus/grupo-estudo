@@ -8,6 +8,7 @@ Repositório dos encontros do grupo: apresentações, atividades práticas, exem
 
 | Data | Tema | Material |
 |---|---|---|
+| 21/10/2026 | Scrum na prática | [Pasta do encontro](2026-10-21%20-%20Scrum/README.md) · [Slides HTML](2026-10-21%20-%20Scrum/apresentacao.html) · [Oficina guiada](2026-10-21%20-%20Scrum/atividade.html) |
 | 14/10/2026 | Docker: primeiros passos com Go | [Pasta do encontro](Docker%20-%2014-10/README.md) · [Slides HTML](Docker%20-%2014-10/apresentacao.html) · [Atividade passo a passo](Docker%20-%2014-10/atividade.html) · [Exemplo Go](Docker%20-%2014-10/exemplo/README.md) |
 
 ## Como estudar
