@@ -28,4 +28,6 @@ Ensaio humano com cronômetro e aplicação com o grupo ainda cabem ao apresenta
 
 ## Publicação
 
-A publicação deve ser confirmada pelo acesso às páginas em produção após o envio. Este arquivo não contém respostas de participantes.
+Publicação confirmada em 21/10/2026 em [grupo-estudo.vercel.app](https://grupo-estudo.vercel.app). Página inicial, índice de Scrum, apresentação, atividade e páginas de roteiro, explicação, apoio, fontes e validação responderam HTTP 200. Índice e apresentação de Docker também responderam HTTP 200. A página inicial foi conferida no navegador com os dois encontros.
+
+O commit dos materiais foi enviado para main no GitHub. A integração Git estava vinculada ao repositório e branch corretos, mas não iniciou nova publicação após o push; a publicação foi feita pela CLI oficial no mesmo projeto Vercel, com estado READY e alias de produção confirmado. Este arquivo não contém respostas de participantes.
